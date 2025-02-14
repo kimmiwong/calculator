@@ -16,36 +16,36 @@
     <div class = "calculator-container">
         <div id= "first-row"> 
             <button class = "button-clear"> AC </button>
-            <button class = "button-power"> ^ </button>
-            <button class = "button-percent"> % </button>
-            <button class = "button-operator"> &divide; </button>
+            <button class = "button-neg"> +/- </button>
+            <button class = "button-percent">%</button>
+            <button class = "button-operator">÷</button>
 
         </div>
         <div id= "second-row"> 
-            <button class = "button-number"> 7 </button>
-            <button class = "button-number"> 8 </button>
-            <button class = "button-number"> 9 </button>
-            <button class = "button-operator"> &times; </button>
+            <button class = "button-number">7</button>
+            <button class = "button-number">8</button>
+            <button class = "button-number">9</button>
+            <button class = "button-operator">x</button>
 
         </div>
         <div id= "third-row"> 
-            <button class = "button-number"> 4 </button>
-            <button class = "button-number"> 5 </button>
-            <button class = "button-number"> 6 </button>
-            <button class = "button-operator"> - </button>
+            <button class = "button-number">4</button>
+            <button class = "button-number">5</button>
+            <button class = "button-number">6</button>
+            <button class = "button-operator">-</button>
 
         </div>
         <div id= "fourth-row">
-            <button class = "button-number"> 1 </button>
-            <button class = "button-number"> 2 </button>
-            <button class = "button-number"> 3 </button>
-            <button class = "button-operator"> + </button>
+            <button class = "button-number">1</button>
+            <button class = "button-number">2</button>
+            <button class = "button-number">3</button>
+            <button class = "button-operator">+</button>
 
         </div>
         <div id= "fifth-row"> 
-            <button class = "button-number"> 0 </button>
-            <button class = "button-decimal"> . </button>
-            <button class = "button-equal"> = </button>
+            <button class = "button-number">0</button>
+            <button class = "button-decimal">.</button>
+            <button class = "button-equal">=</button>
         </div>
 
     </div>
@@ -63,19 +63,35 @@
 <script>
 const decimal = document.querySelector(".button-decimal")
 const equal = document.querySelector(".button-equal")
-const number = document.querySelector(".button-number")
-const operator = document.querySelector(".button-operator")
+const number = document.querySelectorAll(".button-number")
+const operator = document.querySelectorAll(".button-operator")
 const clear = document.querySelector(".button-clear")
 const power = document.querySelector(".button-power")
 const percent = document.querySelector(".button-percent")
+const currentDisplay = document.querySelector(".current-number")
 
 
-let num1 = document.querySelectorAll("button").forEach(button => {
+let num1= ""
+let num2=""
+let selectedOperator = ""
+let isNewCalculation = false;
+
+number.forEach(button => {
     button.addEventListener("click", () => {
-        console.log(button.textContent); 
+       if (currentDisplay.textContent.length < 13) { 
+        if (isNewCalculation) {
+            currentDisplay.textContent = button.textContent;
+            isNewCalculation = false; 
+        } else {
+        if (currentDisplay.textContent === "0") {
+            currentDisplay.textContent = button.textContent;
+        } else {
+            currentDisplay.textContent += button.textContent;
+        }
+    
+    }}
     });
 });
-
 
 
 const operate = (num1, num2, operator) => {
@@ -83,10 +99,10 @@ const operate = (num1, num2, operator) => {
         return num1 + num2;
     } else if (operator === '-') {
         return num1 - num2;
-    } else if (operator === '&times;') {
+    } else if (operator === 'x') {
         return num1 * num2;
-    } else if (operator === '&divide;') {
-        return num1/num2;
+    } else if (operator === '÷') {
+        return num2 === 0 ? "Error" : num1 / num2;
     } else if (operator === '^') {
         return num1 ** num2;
     } else if (operator === '%') {
@@ -94,6 +110,50 @@ const operate = (num1, num2, operator) => {
     }
 
 }
+
+operator.forEach(button => {
+    button.addEventListener("click", () => {
+        num1 = currentDisplay.textContent
+        selectedOperator = button.textContent
+        currentDisplay.textContent = ""
+        isNewCalculation = false;
+       
+    });
+});
+
+equal.addEventListener("click", () => {
+    if (num1 && selectedOperator && currentDisplay.textContent !== "") {  
+        let num2 = parseFloat(currentDisplay.textContent);
+        num1 = parseFloat(num1);
+        let result = operate(num1, num2, selectedOperator);
+        result = parseFloat(result.toFixed(12));
+    
+
+        currentDisplay.textContent = result;
+        num1 = result;
+        selectedOperator = "";
+        isNewCalculation = true; 
+    }
+});
+
+percent.addEventListener("click", () => {
+    if (currentDisplay.textContent !== "") {
+        let value = parseFloat(currentDisplay.textContent); // Convert to number
+        currentDisplay.textContent = value / 100; // Convert to percentage
+        num1 = currentDisplay.textContent; // Store the result for future operations
+    }
+});
+
+
+clear.addEventListener("click", () => {
+    currentDisplay.textContent = ""; 
+    num1 = "";
+    num2 = "";
+    selectedOperator = "";
+})
+
+
+
 
 
 </script>

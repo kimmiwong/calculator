@@ -65,7 +65,7 @@ div {
     background-color: rgb(156, 89, 156)
 }
 
-.button-clear, .button-power, .button-percent {
+.button-clear, .button-neg, .button-percent {
     background-color: rgb(179, 215, 232)
 }
 
@@ -83,5 +83,6 @@ button {
     font-size: 20px; 
     border-radius: 30%;
     margin: 5px;
+    color: white; 
 
 }
