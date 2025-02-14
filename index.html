@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimmi's Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class = "main-container"> 
+    <div class = "answer"> 
+        <div class = "previous-number"></div>
+        <div class = "current-number">0</div>
+
+    </div>
+    <div class = "calculator-container">
+        <div id= "first-row"> 
+            <button class = "button-clear"> AC </button>
+            <button class = "button-power"> ^ </button>
+            <button class = "button-percent"> % </button>
+            <button class = "button-operator"> &divide; </button>
+
+        </div>
+        <div id= "second-row"> 
+            <button class = "button-number"> 7 </button>
+            <button class = "button-number"> 8 </button>
+            <button class = "button-number"> 9 </button>
+            <button class = "button-operator"> &times; </button>
+
+        </div>
+        <div id= "third-row"> 
+            <button class = "button-number"> 4 </button>
+            <button class = "button-number"> 5 </button>
+            <button class = "button-number"> 6 </button>
+            <button class = "button-operator"> - </button>
+
+        </div>
+        <div id= "fourth-row">
+            <button class = "button-number"> 1 </button>
+            <button class = "button-number"> 2 </button>
+            <button class = "button-number"> 3 </button>
+            <button class = "button-operator"> + </button>
+
+        </div>
+        <div id= "fifth-row"> 
+            <button class = "button-number"> 0 </button>
+            <button class = "button-decimal"> . </button>
+            <button class = "button-equal"> = </button>
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+    
+
+    
+</body>
+
+<script>
+const decimal = document.querySelector(".button-decimal")
+const equal = document.querySelector(".button-equal")
+const number = document.querySelector(".button-number")
+const operator = document.querySelector(".button-operator")
+const clear = document.querySelector(".button-clear")
+const power = document.querySelector(".button-power")
+const percent = document.querySelector(".button-percent")
+
+
+let num1 = document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+        console.log(button.textContent); 
+    });
+});
+
+
+
+const operate = (num1, num2, operator) => {
+    if (operator === '+') {
+        return num1 + num2;
+    } else if (operator === '-') {
+        return num1 - num2;
+    } else if (operator === '&times;') {
+        return num1 * num2;
+    } else if (operator === '&divide;') {
+        return num1/num2;
+    } else if (operator === '^') {
+        return num1 ** num2;
+    } else if (operator === '%') {
+        return num1/100;
+    }
+
+}
+
+
+</script>
+</html>
