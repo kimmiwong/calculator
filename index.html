@@ -69,6 +69,8 @@ const clear = document.querySelector(".button-clear")
 const power = document.querySelector(".button-power")
 const percent = document.querySelector(".button-percent")
 const currentDisplay = document.querySelector(".current-number")
+const previous =document.querySelector(".previous-number")
+const neg = document.querySelector(".button-neg")
 
 
 let num1= ""
@@ -113,22 +115,54 @@ const operate = (num1, num2, operator) => {
 
 operator.forEach(button => {
     button.addEventListener("click", () => {
-        num1 = currentDisplay.textContent
-        selectedOperator = button.textContent
-        currentDisplay.textContent = ""
+        previous.textContent = currentDisplay.textContent + button.textContent;
+        num1 = parseFloat(currentDisplay.textContent);
+        selectedOperator = button.textContent;
+        currentDisplay.textContent = "";
         isNewCalculation = false;
        
     });
 });
 
+percent.addEventListener("click", () => {
+    if (currentDisplay.textContent !== "") {
+        let value = parseFloat(currentDisplay.textContent); // Convert to number
+        currentDisplay.textContent = value / 100; // Convert to percentage
+    
+    }
+});
+
+decimal.addEventListener("click", () => {
+    if (!currentDisplay.textContent.includes(".")){
+            if (currentDisplay.textContent === "0") {
+            currentDisplay.textContent = "0.";
+            } else {
+            currentDisplay.textContent += decimal.textContent;
+            }
+        }
+
+})
+
+neg.addEventListener("click", () => {
+   if (currentDisplay.textContent !=="") { 
+    let anotherValue = parseFloat(currentDisplay.textContent);
+    currentDisplay.textContent = (anotherValue * -1).toString();
+    }
+}
+)
+
 equal.addEventListener("click", () => {
     if (num1 && selectedOperator && currentDisplay.textContent !== "") {  
         let num2 = parseFloat(currentDisplay.textContent);
         num1 = parseFloat(num1);
-        let result = operate(num1, num2, selectedOperator);
-        result = parseFloat(result.toFixed(12));
-    
 
+        currentDisplay.textContent = "";
+        previous.textContent = "";
+
+        let result = operate(num1, num2, selectedOperator);
+        result = parseFloat(result.toFixed(7));
+        result = parseFloat(result);
+    
         currentDisplay.textContent = result;
         num1 = result;
         selectedOperator = "";
@@ -136,20 +170,16 @@ equal.addEventListener("click", () => {
     }
 });
 
-percent.addEventListener("click", () => {
-    if (currentDisplay.textContent !== "") {
-        let value = parseFloat(currentDisplay.textContent); // Convert to number
-        currentDisplay.textContent = value / 100; // Convert to percentage
-        num1 = currentDisplay.textContent; // Store the result for future operations
-    }
-});
 
 
 clear.addEventListener("click", () => {
-    currentDisplay.textContent = ""; 
+    currentDisplay.textContent = "0"; 
     num1 = "";
     num2 = "";
     selectedOperator = "";
+    previous.textContent = "";
+    isNewCalculation = "true";
+
 })
 
 

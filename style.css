@@ -15,7 +15,7 @@ div {
     width: 280px;
     margin-top: 25px;
     align-self:center; 
-    border-radius: 10%;
+    border-radius: 5%;
     justify-content: right;
     align-items:last baseline
 
@@ -24,6 +24,10 @@ div {
 .current-number {
     font-size: 40px;
     margin: 5px;
+}
+
+.previous-number {
+    font-size: 40px;
 }
 
 .main-container {
