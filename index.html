@@ -10,7 +10,7 @@
 <div class = "main-container"> 
     <div class = "answer"> 
         <div class = "previous-number"></div>
-        <div class = "current-number">0</div>
+        <div class = "current-number"></div>
 
     </div>
     <div class = "calculator-container">
@@ -80,12 +80,12 @@ let isNewCalculation = false;
 
 number.forEach(button => {
     button.addEventListener("click", () => {
-       if (currentDisplay.textContent.length < 13) { 
+       if (currentDisplay.textContent.length < 12) { 
         if (isNewCalculation) {
             currentDisplay.textContent = button.textContent;
             isNewCalculation = false; 
         } else {
-        if (currentDisplay.textContent === "0") {
+        if (currentDisplay.textContent === "") {
             currentDisplay.textContent = button.textContent;
         } else {
             currentDisplay.textContent += button.textContent;
@@ -104,7 +104,7 @@ const operate = (num1, num2, operator) => {
     } else if (operator === 'x') {
         return num1 * num2;
     } else if (operator === '÷') {
-        return num2 === 0 ? "Error" : num1 / num2;
+        return num2 === 0 ? "ERROR" : num1 / num2;
     } else if (operator === '^') {
         return num1 ** num2;
     } else if (operator === '%') {
@@ -115,11 +115,11 @@ const operate = (num1, num2, operator) => {
 
 operator.forEach(button => {
     button.addEventListener("click", () => {
-        previous.textContent = currentDisplay.textContent + button.textContent;
         num1 = parseFloat(currentDisplay.textContent);
         selectedOperator = button.textContent;
+        previous.textContent = num1 + selectedOperator
         currentDisplay.textContent = "";
-        isNewCalculation = false;
+        isNewCalculation = true;
        
     });
 });
@@ -134,14 +134,15 @@ percent.addEventListener("click", () => {
 
 decimal.addEventListener("click", () => {
     if (!currentDisplay.textContent.includes(".")){
-            if (currentDisplay.textContent === "0") {
-            currentDisplay.textContent = "0.";
-            } else {
-            currentDisplay.textContent += decimal.textContent;
-            }
+           
+        if (currentDisplay.textContent === "") {
+            currentDisplay.textContent += "0." ; // Ensure leading zero
+        } else {
+            currentDisplay.textContent += ".";
         }
-
-})
+        isNewCalculation = false; // Reset calculation state
+    }
+});
 
 neg.addEventListener("click", () => {
    if (currentDisplay.textContent !=="") { 
@@ -160,11 +161,32 @@ equal.addEventListener("click", () => {
         previous.textContent = "";
 
         let result = operate(num1, num2, selectedOperator);
-        result = parseFloat(result.toFixed(7));
-        result = parseFloat(result);
+
+        /*result = parseFloat(result.toFixed(7));
     
-        currentDisplay.textContent = result;
-        num1 = result;
+        currentDisplay.textContent = result;*/
+    
+        if (result === "ERROR") {
+            currentDisplay.textContent = "Error :(";
+        } else {
+            result = parseFloat(result);  // Only apply toFixed if result is valid
+            let resultString = result.toString();
+
+// If the result is too long, cut it down
+if (resultString.length > 10) {
+    if (result % 1 !== 0) {
+                    // If result is decimal, round to fit within 10 characters
+                    result = parseFloat(result.toPrecision(10));
+                } else {
+                    // If result is too large, switch to scientific notation
+                    result = result.toExponential(3);
+                }
+            }
+
+            currentDisplay.textContent = result;
+        }
+
+        num1 = parseFloat(resultString); 
         selectedOperator = "";
         isNewCalculation = true; 
     }
@@ -173,7 +195,7 @@ equal.addEventListener("click", () => {
 
 
 clear.addEventListener("click", () => {
-    currentDisplay.textContent = "0"; 
+    currentDisplay.textContent = ""; 
     num1 = "";
     num2 = "";
     selectedOperator = "";
